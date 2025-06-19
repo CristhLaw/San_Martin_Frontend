@@ -1,0 +1,24 @@
+.form-container {
+
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* centra verticalmente en toda la pantalla */
+
+}
+
+.example-form {
+  width: 100%;
+  max-width: 400px;
+}
+
+.example-full-width {
+  width: 100%;
+}
+
+.search-container{
+  background-color: aqua;
+}
+buscador{
+  border-radius: 30px;
+  border-color: aqua;
+}

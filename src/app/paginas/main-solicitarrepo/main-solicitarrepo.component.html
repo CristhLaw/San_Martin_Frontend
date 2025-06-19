@@ -1,0 +1,29 @@
+          <div style="display: flex; justify-content: center">
+            <div>
+              <h2>Nueva Solicitud De Repuesto</h2>
+
+              <!-- Selección de bus -->
+              <mat-form-field appearance="fill">
+                <mat-label>Placa del bus</mat-label>
+                <input type="text" matInput [formControl]="busControl" [matAutocomplete]="auto" placeholder="Buscar bus por placa">
+
+                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="seleccionarBus($event.option.value)">
+                  <mat-option *ngFor="let bus of busesFiltrados" [value]="bus.placa">
+                    {{ bus.placa }}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+
+              <!-- Mostrar los detalles del bus seleccionado -->
+              <div *ngIf="selectedBus" style="margin-top: 1rem; text-align: center;">
+                <p><strong>ID:</strong> {{ selectedBus.idbus }}</p>
+                <p><strong>Placa:</strong> {{ selectedBus.placa }}</p>
+                <p><strong>Modelo:</strong> {{ selectedBus.modelo }}</p>
+                <p><strong>Capacidad:</strong> {{ selectedBus.capacidad }}</p>
+              </div>
+            </div>
+
+
+
+
+          </div>
