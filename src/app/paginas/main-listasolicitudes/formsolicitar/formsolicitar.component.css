@@ -1,0 +1,42 @@
+/* bus-list.component.css */
+.bus-list {
+  margin: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+button {
+  padding: 5px 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+.loading-spinner {
+  text-align: center;
+  margin-top: 20px;
+}
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+
+form{
+  background-color: ;
+}

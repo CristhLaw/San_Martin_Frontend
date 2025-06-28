@@ -1,14 +1,15 @@
 export class Bus {
   constructor(
    public idbus: number,
-   public nombreMedida: string,
+   public nombreMedida: number,
    public numero_id: string,
    public placa: string,
    public modelo: string,
+   public marca: string,
    public capacidad: string,
    public estado: string,
    public fechaAdquisicion: string,
-   public ultimoMantenimiento: string) {}
+   public ultimoMantenimiento: Date) {}
 }
 
 

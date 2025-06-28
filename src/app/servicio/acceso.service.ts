@@ -14,13 +14,13 @@ export class AccesoService extends GenericService<Acceso> {
   constructor(http: HttpClient) {
   super(http,`${environment.HOST}/accesos`);
   }
-/*
+
   getAccesosByUser(username: string){
     var token = sessionStorage.getItem(environment.TOKEN_NAME);
     console.log(token);
   return this.http.post<Acceso[]>(`${this.url}/user`, username);
   }
-*/
+
 
   getAccesosChange(){return this.accesoChange.asObservable(); }
   setAccesosChange(menus: Acceso[]){ this.accesoChange.next(menus);}

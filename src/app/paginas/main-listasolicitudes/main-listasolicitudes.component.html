@@ -1,0 +1,59 @@
+<div class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource" class="mat-table">
+
+    <!-- ID Solicitud -->
+    <ng-container matColumnDef="idSolicitud">
+      <th mat-header-cell *matHeaderCellDef> ID </th>
+      <td mat-cell *matCellDef="let element"> {{element.idSolicitud}} </td>
+    </ng-container>
+
+    <!-- Usuario -->
+    <ng-container matColumnDef="usuario">
+      <th mat-header-cell *matHeaderCellDef> Usuario </th>
+      <td mat-cell *matCellDef="let element"> {{element.usuario?.nombre}} </td>
+    </ng-container>
+
+    <!-- Bus -->
+    <ng-container matColumnDef="bus">
+      <th mat-header-cell *matHeaderCellDef> Bus </th>
+      <td mat-cell *matCellDef="let element"> {{element.bus?.placa}} </td>
+    </ng-container>
+
+    <!-- Descripción de Falla -->
+    <ng-container matColumnDef="descripcionDeFalla">
+      <th mat-header-cell *matHeaderCellDef> Falla </th>
+      <td mat-cell *matCellDef="let element"> {{element.descripcionDeFalla}} </td>
+    </ng-container>
+
+    <!-- Repuestos -->
+    <ng-container matColumnDef="repuestos">
+      <th mat-header-cell *matHeaderCellDef> Repuesto </th>
+      <td mat-cell *matCellDef="let element"> {{element.repuestos?.nombre}} </td>
+    </ng-container>
+
+    <!-- Herramienta -->
+    <ng-container matColumnDef="herramientas">
+      <th mat-header-cell *matHeaderCellDef> Herramienta </th>
+      <td mat-cell *matCellDef="let element"> {{element.herramientas?.nombre}} </td>
+    </ng-container>
+
+    <!-- Cantidad -->
+    <ng-container matColumnDef="cantidad">
+      <th mat-header-cell *matHeaderCellDef> Cantidad </th>
+      <td mat-cell *matCellDef="let element"> {{element.cantidad}} </td>
+    </ng-container>
+
+    <!-- Estado -->
+    <ng-container matColumnDef="estado">
+      <th mat-header-cell *matHeaderCellDef> Estado </th>
+      <td mat-cell *matCellDef="let element"> {{element.estado}} </td>
+    </ng-container>
+
+    <!-- Cabecera y filas -->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <!-- Paginador -->
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>

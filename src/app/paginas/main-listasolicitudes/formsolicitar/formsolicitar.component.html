@@ -1,0 +1,82 @@
+<div class="contenedor-central bg-green-500 min-h-screen flex justify-center items-center py-10" id="form">
+  <div class="formulario w-full max-w-2xl bg-white p-6 rounded shadow-md space-y-6">
+
+    <!-- Selección de bus -->
+    <div class="card">
+      <h2 class="text-lg font-semibold mb-2">Seleccione un Bus</h2>
+      <p-dropdown
+        [options]="buses"
+        [(ngModel)]="selectedBus"
+        optionLabel="placa"
+        placeholder="Selecciona un bus"
+        [filter]="true"
+        [showClear]="true"
+        class="w-full">
+      </p-dropdown>
+      <div *ngIf="selectedBus" class="mt-2 text-sm text-gray-600">
+        Bus seleccionado: {{ selectedBus.numero_id }} - {{ selectedBus.placa }}
+      </div>
+    </div>
+
+    <!-- Descripción de falla -->
+    <div class="card">
+      <h4 class="text-lg font-semibold mb-2">Descripción de falla</h4>
+      <textarea
+        pTextarea
+        id="description"
+        [(ngModel)]="value"
+        rows="5"
+        cols="30"
+        class="w-full border rounded p-2"
+        placeholder="Describe la falla">
+      </textarea>
+    </div>
+
+    <!-- Búsqueda de repuestos o herramientas -->
+    <!-- Búsqueda múltiple de repuestos o herramientas -->
+    <div class="card">
+      <h2 class="text-lg font-semibold mb-2">Buscar repuestos o herramientas</h2>
+
+      <p-multiSelect
+        [options]="opcionesCombinadas"
+        [(ngModel)]="opcionesSeleccionadas"
+        optionLabel="nombre"
+        placeholder="Selecciona uno o varios"
+        [filter]="true"
+        filterPlaceholder="Escribe para buscar..."
+        [virtualScroll]="true"
+        [itemSize]="40"
+        display="chip"
+        class="w-full">
+
+        <!-- Vista personalizada del listado -->
+        <ng-template let-item pTemplate="item">
+          <div class="flex justify-between items-center">
+            <span>{{ item.nombre }}</span>
+            <span class="text-xs text-gray-500">({{ item.tipo }})</span>
+          </div>
+        </ng-template>
+
+        <!-- Vista personalizada de los chips seleccionados -->
+        <ng-template let-selectedItem pTemplate="selectedItem">
+          <div class="flex items-center">
+            {{ selectedItem.nombre }} <span class="ml-1 text-xs text-gray-500">({{ selectedItem.tipo }})</span>
+          </div>
+        </ng-template>
+
+      </p-multiSelect>
+
+      <!-- Mostrar elementos seleccionados -->
+      <div *ngIf="opcionesSeleccionadas.length > 0" class="mt-3 text-sm text-gray-600">
+        <p>Seleccionaste:</p>
+        <ul class="list-disc pl-5">
+          <li *ngFor="let item of opcionesSeleccionadas">
+            {{ item.nombre }} ({{ item.tipo }})
+          </li>
+        </ul>
+      </div>
+    </div>
+
+
+  </div>
+</div>
