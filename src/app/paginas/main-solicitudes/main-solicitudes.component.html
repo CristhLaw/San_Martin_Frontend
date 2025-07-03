@@ -1,0 +1,59 @@
+<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+  <!-- Columnas -->
+
+  <ng-container matColumnDef="idSolicitud">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+    <td mat-cell *matCellDef="let solicitud">{{ solicitud.idSolicitud }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="usuario">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Usuario</th>
+    <td mat-cell *matCellDef="let solicitud">{{ solicitud.usuario?.user }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="bus">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Bus</th>
+    <td mat-cell *matCellDef="let solicitud">{{ solicitud.bus?.placa }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="descripcionDeFalla">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Falla</th>
+    <td mat-cell *matCellDef="let solicitud">{{ solicitud.descripcionDeFalla }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="repuestos">
+    <th mat-header-cell *matHeaderCellDef>Repuesto</th>
+    <td mat-cell *matCellDef="let solicitud">{{ solicitud.repuestos?.nombreRepuesto }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="herramientas">
+    <th mat-header-cell *matHeaderCellDef>Herramienta</th>
+    <td mat-cell *matCellDef="let solicitud">{{ solicitud.herramientas?.nombreHerramienta }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="cantidad">
+    <th mat-header-cell *matHeaderCellDef>Cantidad</th>
+    <td mat-cell *matCellDef="let solicitud">{{ solicitud.cantidad }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="estado">
+    <th mat-header-cell *matHeaderCellDef>Estado</th>
+    <td mat-cell *matCellDef="let solicitud">{{ solicitud.estado || 'Pendiente' }}</td>
+  </ng-container>
+
+  <!-- Acciones -->
+  <ng-container matColumnDef="acciones">
+    <th mat-header-cell *matHeaderCellDef>Acciones</th>
+    <td mat-cell *matCellDef="let solicitud" (click)="$event.stopPropagation()">
+      <button mat-button color="primary" (click)="aprobar(solicitud.idSolicitud)">Aprobar</button>
+      <button mat-button color="warn" (click)="rechazar(solicitud.idSolicitud)">Rechazar</button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+      (click)="verDetalle(row.idSolicitud)"
+      style="cursor: pointer;">
+  </tr>
+</table>

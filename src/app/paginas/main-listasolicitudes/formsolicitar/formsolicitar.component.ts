@@ -1,95 +1,121 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule, NgIf } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DropdownModule } from 'primeng/dropdown';
-import { OrderListModule } from 'primeng/orderlist';
-import { TextareaModule } from 'primeng/textarea';
+import {BusService} from '../../../servicio/bus.service';
+import {RepuestosService} from '../../../servicio/repuestos.service';
+import {HerramientasService} from '../../../servicio/herramientas.service';
+import {SolicitudrepuestoService} from '../../../servicio/solicitudrepuesto.service';
+import {SolicitudRepuesto} from '../../../modelo/Solicitudrepuesto';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatSelectModule} from '@angular/material/select';
+import {MatInputModule} from '@angular/material/input';
+import {MatIconModule} from '@angular/material/icon';
+import {MatButtonModule} from '@angular/material/button';
+import {MatOptionModule} from '@angular/material/core';
+import {MatCardModule} from '@angular/material/card';
 
-import { Bus } from '../../../modelo/Bus';
-import { Repuestos } from '../../../modelo/Repuestos';
-import { Herramientas } from '../../../modelo/Herramientas';
-
-import { BusService } from '../../../servicio/bus.service';
-import { RepuestosService } from '../../../servicio/repuestos.service';
-import { HerramientasService } from '../../../servicio/herramientas.service';
-
-import { forkJoin } from 'rxjs';
-import {MultiSelect} from 'primeng/multiselect'; // ✅ Necesario para combinar peticiones
 
 @Component({
   selector: 'app-formsolicitar',
   standalone: true,
-  templateUrl: './formsolicitar.component.html',
-  styleUrls: ['./formsolicitar.component.css'],
   imports: [
     CommonModule,
+    CommonModule,
     FormsModule,
-    ReactiveFormsModule,
-    DropdownModule,
-    OrderListModule,
-    TextareaModule,
-    NgIf,
-    MultiSelect
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
+    MatIconModule,
+    MatButtonModule,
+    MatOptionModule,
+    MatCardModule
   ],
+  templateUrl: './formsolicitar.component.html',
+  styleUrls: ['./formsolicitar.component.css']
 })
 export class FormsolicitarComponent implements OnInit {
-  value: string = '';
 
-  // Bus
-  buses: Bus[] = [];
-  selectedBus: Bus | null = null;
+  buses: any[] = [];
+  repuestosCombinados: any[] = [];
+  herramientasCombinadas: any[] = [];
+  itemsCombinados: any[] = [];
 
-  // Repuestos y Herramientas (listas originales)
-  repuestos: Repuestos[] = [];
-  herramientas: Herramientas[] = [];
+  selectedBus: any;
+  descripcionFalla: string = '';
+  itemSeleccionado: any;
+  itemsSeleccionados: any[] = [];
 
-  // Lista combinada
-  opcionesCombinadas: any[] = [];
-
-  // Opción seleccionada (repuesto o herramienta)
-  opcionesSeleccionadas: any[] = [];
-
+  usuario = { idUsuario: 1 }; // Puedes cambiar esto por el usuario logueado
 
   constructor(
     private busService: BusService,
-    private repuestosService: RepuestosService,
-    private herramientasService: HerramientasService
+    private repuestoService: RepuestosService,
+    private herramientaService: HerramientasService,
+    private solicitudService: SolicitudrepuestoService
   ) {}
 
   ngOnInit(): void {
-    this.getBuses();
-    this.cargarOpcionesCombinadas();
+    this.cargarDatos();
   }
 
-  getBuses(): void {
-    this.busService.findAll().subscribe({
-      next: (data: Bus[]) => (this.buses = data),
-      error: (err) => console.error('Error al cargar buses:', err),
+  cargarDatos() {
+    this.busService.listar().subscribe(data => this.buses = data);
+    this.repuestoService.listar().subscribe(data => {
+      this.repuestosCombinados = data;
+      this.actualizarItemsCombinados();
+    });
+    this.herramientaService.listar().subscribe(data => {
+      this.herramientasCombinadas = data;
+      this.actualizarItemsCombinados();
     });
   }
 
-  cargarOpcionesCombinadas(): void {
-    forkJoin([
-      this.repuestosService.findAll(),
-      this.herramientasService.findAll()
-    ]).subscribe({
-      next: ([repuestos, herramientas]) => {
-        // Adaptar modelos para el dropdown
-        const listaRepuestos = repuestos.map(r => ({
-          id: r.idRepuestos,
-          nombre: r.nombreRepuesto,
-          tipo: 'Repuesto'
-        }));
+  actualizarItemsCombinados() {
+    this.itemsCombinados = [
+      ...this.repuestosCombinados.map(r => ({ tipo: 'repuesto', id: r.idRepuestos, nombre: r.nombreRepuesto, cantidad: 1 })),
+      ...this.herramientasCombinadas.map(h => ({ tipo: 'herramienta', id: h.idHerramientas, nombre: h.nombreHerramienta, cantidad: 1 }))
+    ];
+  }
 
-        const listaHerramientas = herramientas.map(h => ({
-          id: h.idHerramienta,
-          nombre: h.nombreHerramienta,
-          tipo: 'Herramienta'
-        }));
+  agregarItem() {
+    if (this.itemSeleccionado && !this.itemsSeleccionados.find(i => i.id === this.itemSeleccionado.id && i.tipo === this.itemSeleccionado.tipo)) {
+      this.itemsSeleccionados.push({ ...this.itemSeleccionado });
+    }
+    this.itemSeleccionado = null;
+  }
 
-        this.opcionesCombinadas = [...listaRepuestos, ...listaHerramientas];
-      },
-      error: (err) => console.error('Error al cargar repuestos y herramientas:', err)
+  quitarItem(item: any) {
+    this.itemsSeleccionados = this.itemsSeleccionados.filter(i => !(i.id === item.id && i.tipo === item.tipo));
+  }
+
+  guardarSolicitud() {
+    const repuestos = this.itemsSeleccionados
+      .filter(i => i.tipo === 'repuesto')
+      .map(i => ({ idRepuesto: i.id, cantidad: i.cantidad }));
+
+    const herramientas = this.itemsSeleccionados
+      .filter(i => i.tipo === 'herramienta')
+      .map(i => ({ idHerramienta: i.id, cantidad: i.cantidad }));
+
+    const solicitud = new SolicitudRepuesto(
+      this.descripcionFalla,
+      'PENDIENTE',
+      this.usuario.idUsuario,
+      this.selectedBus.idbus,
+      repuestos,
+      herramientas
+    );
+
+    this.solicitudService.insertarSolicitud(solicitud).subscribe(() => {
+      alert('Solicitud guardada correctamente');
+      this.resetForm();
     });
+  }
+
+  resetForm() {
+    this.descripcionFalla = '';
+    this.selectedBus = null;
+    this.itemsSeleccionados = [];
   }
 }
+//holalola

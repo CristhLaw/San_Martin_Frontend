@@ -14,4 +14,8 @@ export class BusService extends GenericService<Bus> {
     super(http, `${environment.HOST}/buses`);  // URL base para la API de buses
   }
 
+  listar(): Observable<Bus[]> {
+    return this.http.get<Bus[]>(this.url);
+  }
+
 }

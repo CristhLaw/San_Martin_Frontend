@@ -3,6 +3,7 @@ import {environment} from '../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {GenericService} from './generic.service';
 import {Repuestos} from '../modelo/Repuestos';
+import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class RepuestosService extends GenericService<Repuestos> {
     super(http, `${environment.HOST}/repuesto`)
   }
 
-  listar() {
-
+  listar(): Observable<Repuestos[]> {
+    return this.http.get<Repuestos[]>(this.url);
   }
 }

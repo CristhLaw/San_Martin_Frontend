@@ -1,4 +1,3 @@
-
 export class Repuestos {
   constructor(
     public idRepuestos: number,
@@ -8,6 +7,5 @@ export class Repuestos {
     public marca: string,
     public codigoFabricante: string,
     public unidadMedida: string
-  ) {
-  }
+  ) {}
 }

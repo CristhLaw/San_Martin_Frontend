@@ -1,13 +1,8 @@
-export interface Usuario {
-
-
-  idUsuario: number,
-  nombre: string,
-  correoElectronico: string,
-  telefono: string,
-  direccion: string,
-  fechaRegistro: string,
-  rol: string
-   token: string;
-
+export class Usuario {
+  constructor(
+    public idUsuario: number,
+    public user: string,
+    public clave: string,
+    public estado: string
+  ) {}
 }

@@ -37,6 +37,9 @@ html, body {
 }
 
 
-form{
-  background-color: ;
+p-dropdown{
+  background-color: #dddddd;
+}
+::ng-deep .custom-dropdown .p-dropdown {
+  background-color: #dddddd !important;
 }

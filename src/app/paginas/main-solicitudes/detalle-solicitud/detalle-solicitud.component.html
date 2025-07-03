@@ -1,0 +1,33 @@
+<p>detalle-solicitud works!</p>
+<h2>Detalle de la solicitud</h2>
+<p>ID recibido: {{ id }}</p>
+
+<mat-card class="example-card" appearance="outlined">
+  <table>
+    <thead>
+    <tr>
+      <th>Campo</th>
+      <th>Valor</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td><strong>Estado:</strong></td>
+      <td>{{ solicitudDetalle.estado }}</td>
+    </tr>
+    <tr>
+      <td><strong>Nombre del Solicitante:</strong></td>
+      <td>{{ solicitudDetalle.solicitante }}</td>
+    </tr>
+    <tr>
+      <td><strong>Descripción de Falla:</strong></td>
+      <td>{{ solicitudDetalle.descripcionDeFalla }}</td>
+    </tr>
+    <tr>
+      <td><strong>Cargo:</strong></td>
+      <td>{{ solicitudDetalle.cargo }}</td>
+    </tr>
+    </tbody>
+  </table>
+</mat-card>
+
