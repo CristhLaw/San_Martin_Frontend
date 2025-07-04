@@ -1,8 +1,7 @@
 import { Usuario } from './Usuario';
 import { Bus } from './Bus';
-import { Repuestos } from './Repuestos';
-import { Herramientas } from './Herramientas';
 
+/** Interfaces para envío */
 export interface RepuestoCantidad {
   idRepuesto: number;
   cantidad: number;
@@ -13,27 +12,41 @@ export interface HerramientaCantidad {
   cantidad: number;
 }
 
-// DTO para enviar al backend (crear o actualizar)
+/** Modelo para crear o actualizar una solicitud */
 export class SolicitudRepuesto {
   constructor(
     public descripcionDeFalla: string,
     public estado: string,
-    public usuario: number, // ID numérico
-    public bus: number,     // ID numérico
+    public usuario: number, // ID del usuario
+    public bus: number,     // ID del bus
     public repuestos: RepuestoCantidad[],
-    public herramientas: HerramientaCantidad[]
+    public herramientas: HerramientaCantidad[],
+    public observacionRevision?: string
   ) {}
 }
 
-// DTO para recibir datos detallados desde el backend (reporte completo)
-export class SolicitudRepuestoReport {
-  constructor(
-    public idSolicitud: number,
-    public descripcionDeFalla: string,
-    public estado: string,
-    public usuario: Usuario,
-    public bus: Bus,
-    public detalleRepuestos: { repuesto: Repuestos; cantidad: number }[],
-    public detalleHerramientas: { herramienta: Herramientas; cantidad: number }[]
-  ) {}
+/** Interfaces de detalles */
+export interface DetalleRepuestoDTO {
+  id: number;
+  idRepuesto: number;
+  nombreRepuesto: string;
+  cantidad: number;
+}
+
+export interface DetalleHerramientaDTO {
+  id: number;
+  idHerramienta: number;
+  nombreHerramienta: string;
+  cantidad: number;
+}
+
+/** Modelo para recibir el detalle completo */
+export interface SolicitudRepuestoReport {
+  idSolicitud: number;
+  descripcionDeFalla: string;
+  estado: string;
+  usuario: Usuario;
+  bus: Bus;
+  detalleRepuestos: DetalleRepuestoDTO[];
+  detalleHerramientas: DetalleHerramientaDTO[];
 }

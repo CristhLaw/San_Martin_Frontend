@@ -1,25 +1,25 @@
 import { Component, OnInit } from '@angular/core';
-import {BusService} from '../../../servicio/bus.service';
-import {RepuestosService} from '../../../servicio/repuestos.service';
-import {HerramientasService} from '../../../servicio/herramientas.service';
-import {SolicitudrepuestoService} from '../../../servicio/solicitudrepuesto.service';
-import {SolicitudRepuesto} from '../../../modelo/Solicitudrepuesto';
-import {CommonModule} from '@angular/common';
-import {FormsModule} from '@angular/forms';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatSelectModule} from '@angular/material/select';
-import {MatInputModule} from '@angular/material/input';
-import {MatIconModule} from '@angular/material/icon';
-import {MatButtonModule} from '@angular/material/button';
-import {MatOptionModule} from '@angular/material/core';
-import {MatCardModule} from '@angular/material/card';
+import { BusService } from '../../../servicio/bus.service';
+import { RepuestosService } from '../../../servicio/repuestos.service';
+import { HerramientasService } from '../../../servicio/herramientas.service';
+import { SolicitudrepuestoService } from '../../../servicio/solicitudrepuesto.service';
+import { SolicitudRepuesto } from '../../../modelo/Solicitudrepuesto';
+import { AuthService } from '../../../servicio/auth.service';
 
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatOptionModule } from '@angular/material/core';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-formsolicitar',
   standalone: true,
   imports: [
-    CommonModule,
     CommonModule,
     FormsModule,
     MatFormFieldModule,
@@ -45,17 +45,16 @@ export class FormsolicitarComponent implements OnInit {
   itemSeleccionado: any;
   itemsSeleccionados: any[] = [];
 
-  usuario = { idUsuario: 1 }; // Puedes cambiar esto por el usuario logueado
-
   constructor(
     private busService: BusService,
     private repuestoService: RepuestosService,
     private herramientaService: HerramientasService,
-    private solicitudService: SolicitudrepuestoService
+    private solicitudService: SolicitudrepuestoService,
+    private authService: AuthService // ✅ Inyección del servicio de autenticación
   ) {}
 
-  ngOnInit(): void {
-    this.cargarDatos();
+  ngOnInit() {
+    this.cargarDatos(); // ✅ Cargar buses, repuestos y herramientas al iniciar
   }
 
   cargarDatos() {
@@ -89,6 +88,13 @@ export class FormsolicitarComponent implements OnInit {
   }
 
   guardarSolicitud() {
+    const userId = this.authService.getUsuarioId();
+
+    if (!userId) {
+      alert('Usuario no autenticado');
+      return;
+    }
+
     const repuestos = this.itemsSeleccionados
       .filter(i => i.tipo === 'repuesto')
       .map(i => ({ idRepuesto: i.id, cantidad: i.cantidad }));
@@ -100,15 +106,21 @@ export class FormsolicitarComponent implements OnInit {
     const solicitud = new SolicitudRepuesto(
       this.descripcionFalla,
       'PENDIENTE',
-      this.usuario.idUsuario,
-      this.selectedBus.idbus,
+      userId,
+      this.selectedBus?.idbus, // ✅ Precaución con optional chaining
       repuestos,
       herramientas
     );
 
-    this.solicitudService.insertarSolicitud(solicitud).subscribe(() => {
-      alert('Solicitud guardada correctamente');
-      this.resetForm();
+    this.solicitudService.insertarSolicitud(solicitud).subscribe({
+      next: () => {
+        alert('Solicitud guardada correctamente');
+        this.resetForm();
+      },
+      error: (err) => {
+        console.error('Error al guardar solicitud:', err);
+        alert('Error al guardar solicitud');
+      }
     });
   }
 
@@ -118,4 +130,3 @@ export class FormsolicitarComponent implements OnInit {
     this.itemsSeleccionados = [];
   }
 }
-//holalola

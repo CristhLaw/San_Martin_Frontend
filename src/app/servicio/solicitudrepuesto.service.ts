@@ -35,6 +35,12 @@ export class SolicitudrepuestoService extends GenericService<SolicitudRepuesto> 
   }
 
 
+  getDetalleSolicitud(id: number): Observable<SolicitudRepuestoReport> {
+    return this.http.get<SolicitudRepuestoReport>(`${this.url}/detalle/${id}`);
+  }
+  actualizarEstado(data: { idSolicitud: number; estado: string; observacionRevision: string }) {
+    return this.http.put(`${this.url}/actualizar-estado`, data);
+  }
 
 
 

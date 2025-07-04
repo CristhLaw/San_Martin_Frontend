@@ -30,13 +30,15 @@ export class AuthService {
         // ✅ Guardar el ID del usuario en localStorage
         localStorage.setItem('usuarioId', response.idUsuario.toString());
 
-        // ✅ Si usas token, guarda también el token (opcional)
-        // sessionStorage.setItem(environment.TOKEN_NAME, response.token);
-
-        // ✅ Redirigir si se desea automáticamente
-        this.router.navigate(['/dashboard']); // Cambia la ruta según tu app
+        // ✅ Redirigir al dashboard (ajústalo según tu aplicación)
+        this.router.navigate(['/dashboard']);
       })
     );
+  }
+
+  getUsuarioId(): number | null {
+    const id = localStorage.getItem('usuarioId');
+    return id ? +id : null;
   }
 
   logout() {
@@ -46,6 +48,6 @@ export class AuthService {
   }
 
   isLogged(): boolean {
-    return sessionStorage.getItem(environment.TOKEN_NAME) != null;
+    return localStorage.getItem('usuarioId') != null;
   }
 }
