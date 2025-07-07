@@ -6,6 +6,7 @@ import { FormsolicitarComponent } from './main-listasolicitudes/formsolicitar/fo
 import { SolicitudesComponent } from './main-listasolicitudes/solicitudes.component';
 import { MainSolicitudesComponent } from './main-solicitudes/main-solicitudes.component';
 import { DetalleSolicitudComponent } from './main-solicitudes/detalle-solicitud/detalle-solicitud.component';
+import {MainRepuestosComponent} from './main-repuestos/main-repuestos.component';
 
 export const pagesRoutes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
@@ -14,6 +15,7 @@ export const pagesRoutes: Routes = [
   { path: 'solicitudes', component: SolicitudesComponent },
   { path: 'peticiones', component: MainSolicitudesComponent },
   { path: 'detalle-solicitud/:id', component: DetalleSolicitudComponent },
+  { path: 'repuestos', component: MainRepuestosComponent },
 
   {path:'not-403', component: Not403Component}
 /*{ path: 'categoria', component: MainCategoriaComponent , },

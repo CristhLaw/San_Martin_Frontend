@@ -32,7 +32,8 @@ export interface DetalleRepuestoDTO {
   nombreRepuesto: string;
   cantidad: number;
 }
-//completo sin diseño
+
+
 export interface DetalleHerramientaDTO {
   id: number;
   idHerramienta: number;
